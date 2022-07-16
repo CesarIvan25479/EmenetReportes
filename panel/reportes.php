@@ -1,9 +1,15 @@
 <?php
-include "../php/ConexionMySQL.php";
-$folio  = $_POST["folio"];
-$query = "SELECT ImgCompromiso, ImgCredencial, ImgOrden, Cliente FROM ordenes WHERE Folio = '$folio'";
-$result = mysqli_query($Conexion, $query);
-$datosImagenes = mysqli_fetch_array($result);
+session_start();
+$usuario = $_SESSION["nombreUser"];
+
+
+date_default_timezone_set('America/Mexico_City');
+$fechaActualFormato = date('d-m-Y');
+$FechaActual = date('Ymd');
+
+
+
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -15,35 +21,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Imagenes Orden</title>
+  <title>Reporte Ventas</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <link rel="icon" href="../dist/img/Logosinfondo.svg">
-  <!-- Ekko Lightbox -->
-  <link rel="stylesheet" href="../plugins/ekko-lightbox/ekko-lightbox.css">
-  <style>
-    .scrollTablaClientes {
-      overflow: scroll;
-      width: 101%;
-      max-height: 600px;
-      height: auto;
-    }
-
-    .scrollTablaClientes::-webkit-scrollbar {
-      width: 2px;
-    }
-
-    .scrollTablaClientes::-webkit-scrollbar-thumb {
-      background-color: gray;
-    }
-  </style>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
@@ -57,16 +48,62 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Reporte pagos</a>
+          <a href="#" class="nav-link">Nuevo Reporte</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Administración</a>
+          <a href="#" class="nav-link">Reportes Pendientes</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#" class="nav-link">Reportes Atendidos</a>
         </li>
       </ul>
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <!-- Messages Dropdown Menu -->
+        <!-- Navbar Search -->
+        <li class="nav-item">
+          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+          </a>
+          <div class="navbar-search-block">
+            <form class="form-inline">
+              <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Buscar" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </li>
+
+        <!-- Notifications Dropdown Menu -->
+        <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-warning navbar-badge">15</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">10 Notificaciones</span>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-headset mr-2"></i> 4 reportes nuevos
+              <span class="float-right text-muted text-sm">3 mins</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <i class="fas fa-calendar mr-2"></i> 8 Instalaciones nuevas
+              <span class="float-right text-muted text-sm">12 horas</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item dropdown-footer">Mostrar Todas las Notificaciones</a>
+          </div>
+        </li>
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
@@ -97,7 +134,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <img src="../dist/img/profile-user.png" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">Usuario Emenet</a>
+            <a href="#" class="d-block"><?= $usuario ?></a>
           </div>
         </div>
 
@@ -136,11 +173,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </ul>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item menu-open">
               <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-solid fa-users"></i>
+                <i class="nav-icon fas fa-solid fa-headset"></i>
                 <p>
-                  Clientes
+                  Soporte técnico
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
@@ -148,36 +185,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                   <a href="./Clientes.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Clientes</p>
+                    <p>Nuevo Reporte</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link active" data-toggle="modal" data-target="#IntFecha">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>
-                      Clientes Router
-                      <i class="right fas fa-angle-left"></i>
-                    </p>
-                  </a>
-                  <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a href="#" class="nav-link">
-                        <i class="far fa-dot-circle nav-icon"></i>
-                        <p>Coyoltepec</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link" data-toggle="modal" data-target="#IntFecha">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Reporte Ventas</p>
+                    <p>Reportes Pendiente</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="./OrdenesInstalacion.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Ordenes Instalación</p>
+                    <p>Reportes Atendidos</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="./OrdenesInstalacion.php" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Estadisticas</p>
                   </a>
                 </li>
               </ul>
@@ -185,9 +211,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <li class="nav-item">
               <a href="../index.html" class="nav-link">
-                <i class="nav-icon fas fa-chart-line"></i>
+                <i class="nav-icon fas fa-calendar"></i>
                 <p>
-                  Cobranza
+                  Instalaciones
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
@@ -195,13 +221,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                   <a href="./PagosBanco.php" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Pagos Banco</p>
+                    <p>Nueva Instalación</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Pagos Factura</p>
+                    <p>Instalaciones Pendientes</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Instalaciones Realizdas</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Instalaciones Canceladas</p>
                   </a>
                 </li>
               </ul>
@@ -257,96 +295,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
               </ul>
             </li>
-
-            <li class="nav-item">
-              <a href="../index.html" class="nav-link">
-                <i class="nav-icon fas fa-wifi"></i>
-                <p>
-                  Hostpot
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Router</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Lista Planes</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Crear Fichas</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a href="../index.html" class="nav-link">
-                <i class="nav-icon fas fa-cloud"></i>
-                <p>
-                  AdminOLT
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a href="../index.html" class="nav-link">
-                <i class="nav-icon fas fa-archive"></i>
-                <p>
-                  Almacen
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Proximamente...</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -360,8 +308,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="content-header">
         <div class="container-fluid">
           <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0"></h1>
+            <div class="col-sm-12">
+              <h3 class="m-0">Reporte de ventas por cliente
+                <small></small>
+              </h3>
             </div><!-- /.col -->
           </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -372,17 +322,59 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-12">
-              <div class="card card-default">
+            <div class="col-md-12 col-sm-12">
+              <!-- Default box -->
+              <div class="card">
                 <div class="card-header">
-                  <h4>Documentos Orden <?= $datosImagenes['Cliente'] ?></h4>
+                  <form id="ActulizarReporte" method="post">
+                    <div class="form-row align-items-center">
+                      <div class="col-sm-3 my-1" id="oprime">
+                        <select class="form-control form-control-sm select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;" id="cliente" name="cliente">
+                          <option></option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-3 my-1">
+                        <input class="form-control form-control-sm" type="date" id="FechaIn" name="fechaReporte" value="<?php echo $FechaReporte ?>">
+                      </div>
+
+                      <div class="col-sm-2 my-1">
+                        <select name="opcion" class="form-control form-control-sm" id="opcion">
+                          <option>Mostrar</option>
+                          <option>Mostrar y Activar</option>
+                        </select>
+                      </div>
+                      <div class="col-auto my-1">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="todasFechas" id="todasFechas">
+                          <label class="form-check-label" for="todasFechas">
+                            Todas
+                          </label>
+                        </div>
+                      </div>
+                      <div class="col-auto my-1">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="todosConceptos" id="todosConceptos">
+                          <label class="form-check-label" for="todosConceptos">
+                            Todas las ventas
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
                 <div class="card-body">
-                  <div id="documentosImg">
-
-                  </div>
+                  <div id="tablaInternet"></div>
+                  <div id="tablaCamara"></div>
+                  <div id="tablaTelefono"></div>
                 </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+
+                </div>
+                <!-- /.card-footer-->
               </div>
+              <!-- /.card -->
             </div>
           </div>
           <!-- /.row -->
@@ -392,34 +384,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div>
     <!-- /.content-wrapper -->
 
-    <div class="modal fade bs-example-modal-sm" id="IntFecha" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-sm" role="document">
-        <form name="PasarFecha" action="./ReportePagos.php" method="POST">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Fecha Inicio</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <?php
-              $FechaActual = date("Y-m-01");
-              $fechaAnterior = date("Y-m-d", strtotime($FechaActual . "- 5 month"));
-              ?>
-              <input class="form-control" type="date" name="FechaRep" value="<?php echo $fechaAnterior; ?>">
-              <div class="mt-3" id='respuesta1'>
-                <!--Muestra Cliente-->
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary">Generar</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
       <!-- Control sidebar content goes here -->
@@ -450,32 +414,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- REQUIRED SCRIPTS -->
 
   <!-- jQuery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="../plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
   <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Select2 -->
+  <script src="../plugins/select2/js/select2.full.min.js"></script>
   <!-- SweetAlert2 -->
   <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- AdminLTE App -->
   <script src="../dist/js/adminlte.min.js"></script>
-  <!-- bs-custom-file-input -->
-  <script src="../plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-  <!-- Ekko Lightbox -->
-  <script src="../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
-  <script src="../js/ordenesImagenes.js"></script>
+  <!-- Page specific script -->
   <script>
-    $(document).ready(() => {
-      $("#documentosImg").load("../pages/tablas/documentosImg.php?folio=" + <?=$folio?>);
-    })
     $(function() {
-      bsCustomFileInput.init();
-    });
-    $(function() {
-        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-            event.preventDefault();
-            $(this).ekkoLightbox({
-                alwaysShowClose: true
-            });
-        });
+      //Initialize Select2 Elements
+      $('.select2').select2()
+
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
     })
   </script>
 </body>

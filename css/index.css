@@ -1,0 +1,14 @@
+.mb-1{
+    text-align: center;
+    margin-top: 20px;
+}
+.mb-1 a{
+    color: red;
+    display: none;
+}
+.marg3{
+    margin-bottom: 2rem !important;
+}
+.login-box-msg{
+    margin-bottom: 0.6rem;
+}
