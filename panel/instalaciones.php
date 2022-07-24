@@ -1,15 +1,10 @@
 <?php
 session_start();
-$usuario = $_SESSION["nombreUser"];
-
-
-date_default_timezone_set('America/Mexico_City');
-$fechaActualFormato = date('d-m-Y');
-$FechaActual = date('Ymd');
-
-
-
-
+if(isset($_SESSION["nombreUser"])){
+  $usuario = $_SESSION["nombreUser"];
+}else{
+  header("location: ../index.html");
+}
 ?>
 <!DOCTYPE html>
 <!--
@@ -21,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reporte Ventas</title>
+  <title>Instalaciones</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -35,6 +30,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
   <link rel="icon" href="../dist/img/Logosinfondo.svg">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
@@ -48,13 +44,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Nuevo Reporte</a>
+          <a href="#" class="nav-link">Nueva Instalación</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Reportes Pendientes</a>
+          <a href="#pendientes" class="nav-link" onclick="mostrarPendientes('1')">Pendientes</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Reportes Atendidos</a>
+          <a href="#realizadas" class="nav-link" onclick="mostrarRealizadas('3')">Realizdas</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="#canceladas" class="nav-link" onclick="mostrarCanceladas('4')">Canceladas</a>
         </li>
       </ul>
 
@@ -156,7 +155,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
-              <a href="#" class="nav-link active">
+              <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Dashboard
@@ -173,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </ul>
             </li>
 
-            <li class="nav-item menu-open">
+            <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-solid fa-headset"></i>
                 <p>
@@ -209,7 +208,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </ul>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item menu-open">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-calendar"></i>
                 <p>
@@ -309,8 +308,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-12">
-              <h3 class="m-0">Reporte de ventas por cliente
-                <small></small>
+              <h3 class="m-0">
+                <small>Instalaciones Pendientes</small>
               </h3>
             </div><!-- /.col -->
           </div><!-- /.row -->
@@ -326,47 +325,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- Default box -->
               <div class="card">
                 <div class="card-header">
-                  <form id="ActulizarReporte" method="post">
-                    <div class="form-row align-items-center">
-                      <div class="col-sm-3 my-1" id="oprime">
-                        <select class="form-control form-control-sm select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;" id="cliente" name="cliente">
-                          <option></option>
-                        </select>
-                      </div>
-
-                      <div class="col-sm-3 my-1">
-                        <input class="form-control form-control-sm" type="date" id="FechaIn" name="fechaReporte" value="<?php echo $FechaReporte ?>">
-                      </div>
-
-                      <div class="col-sm-2 my-1">
-                        <select name="opcion" class="form-control form-control-sm" id="opcion">
-                          <option>Mostrar</option>
-                          <option>Mostrar y Activar</option>
-                        </select>
-                      </div>
-                      <div class="col-auto my-1">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="todasFechas" id="todasFechas">
-                          <label class="form-check-label" for="todasFechas">
-                            Todas
-                          </label>
-                        </div>
-                      </div>
-                      <div class="col-auto my-1">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="todosConceptos" id="todosConceptos">
-                          <label class="form-check-label" for="todosConceptos">
-                            Todas las ventas
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                  Instalaciones Pendientes
                 </div>
                 <div class="card-body">
-                  <div id="tablaInternet"></div>
-                  <div id="tablaCamara"></div>
-                  <div id="tablaTelefono"></div>
+                  <div id="tablaInstalaciones"></div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -424,6 +386,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- AdminLTE App -->
   <script src="../dist/js/adminlte.min.js"></script>
   <!-- Page specific script -->
+  <script src="../controller/instalaciones.js"></script>
+  <script>
+    $(document).ready(() => {
+      $("#tablaInstalaciones").load("../views/tablaInstalaciones.php?clave=1")
+    })
+  </script>
 </body>
 
 </html>
