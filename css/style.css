@@ -1,5 +1,38 @@
+.telefono2{
+    display: none;
+}
+#agregaTel{
+    cursor: pointer;
+}
+.titulo-aviso{
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0;
+    margin: 2px;
+}
+.info-Fecha{
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0;
+}
+.usario-registro{
+    color: #00809C;
+    font-weight: bold;
+    font-size: 14px;
+}
+.div-cont{
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
 @media (max-width: 435px) {
-    body{
+    .tablaInstalaciones{
         zoom:60%;
       }
+      .form-group{
+        margin-bottom:0rem
+    }
   }

@@ -1,11 +1,16 @@
 <?php
 require_once "../model/conexion.php";
+CONST ESTADO = array(
+    "1" => "Pendientes",
+    "3" => "Realizadas",
+    "4" => "No exitosas"
+);
 $clave = $_GET["clave"];
 
 if ($clave == 1) {
     $query = "SELECT ins.id, detins.id_instalacion, ins.nombreCliente, 
     ins.telefono, catp.nombrePoblacion, ins.fechaRegistro, 
-    clasin.nombreClasificacion, detins.fechaAtencion 
+    clasin.descripcion, detins.fechaAtencion 
     FROM instalaciones AS ins 
     INNER JOIN catalogopoblaciones AS catp ON ins.id_poblacion = catp.id 
     INNER JOIN clasificacionesinstalacion AS clasin ON clasin.id = ins.id_clasificacion 
@@ -15,7 +20,7 @@ if ($clave == 1) {
 } else {
     $query = "SELECT ins.id, detins.id_instalacion, ins.nombreCliente, 
     ins.telefono, catp.nombrePoblacion, ins.fechaRegistro, 
-    clasin.nombreClasificacion, detins.fechaAtencion 
+    clasin.descripcion, detins.fechaAtencion 
     FROM instalaciones AS ins 
     INNER JOIN catalogopoblaciones AS catp ON ins.id_poblacion = catp.id 
     INNER JOIN clasificacionesinstalacion AS clasin ON clasin.id = ins.id_clasificacion 
@@ -27,43 +32,46 @@ if ($clave == 1) {
 <div class="row">
     <div class="col-sm-12">
         <div class="card-box table-responsive">
-            <table id="ordenes" class="table table-sm">
+            <table id="tablaRepor" class="table table-sm">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Folio</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Telefono</th>
                         <th scope="col">Población</th>
-                        <?php if($clave == 1):?>
-                        <th scope="col">Registro</th>
-                        <?php else: ?>
+                        <?php if ($clave == 1) : ?>
+                            <th scope="col">Registro</th>
+                        <?php else : ?>
                             <th scope="col">Registro | Atendido</th>
-                        <?php endif;?>
-                        <th scope="col">Clas.</th>
+                        <?php endif; ?>
+                        <th scope="col">Clasif.</th>
                         <th scope="col">Accion</th>
                     </tr>
                 </thead>
                 <?php while ($datos = mysqli_fetch_array($result)) :
                 ?>
-                    <tr>
-                        <th scope="row"><?= $datos["id"] ?></th>
-                        <td><?= $datos["nombreCliente"] ?></td>
-                        <td><?= $datos["telefono"] ?></td>
-                        <td><?= $datos["nombrePoblacion"] ?></td>
+
+                    <?php if ($clave == 3):?>
+                        <tr class="table-success">
+                    <?php elseif($clave == 4):?>
+                        <tr class="table-danger">
+                    <?php else:?>
+                        <tr>
+                    <?php endif; ?>
+                        <th scope="row" data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["id"] ?></th>
+                        <td data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["nombreCliente"] ?></td>
+                        <td data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?=substr($datos["telefono"],0,10)?></td>
+                        <td data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["nombrePoblacion"] ?></td>
                         <?php if ($clave == 1) : ?>
-                            <td><?= substr($datos["fechaRegistro"], 0, 10) ?></td>
-                        <?php else: ?>
-                            <td><?= substr($datos["fechaRegistro"], 0, 10)." | ". substr($datos["fechaAtencion"], 0, 10)?></td>
+                            <td data-toggle="modal" data-target="#modalActualizarInst"><?= substr($datos["fechaRegistro"], 0, 10) ?></td>
+                        <?php else : ?>
+                            <td data-toggle="modal" data-target="#modalActualizarInst"><?= substr($datos["fechaRegistro"], 0, 10)?><small style="font-weight: bold;color:red;font-size:18px"> | </small><?=substr($datos["fechaAtencion"], 0, 10)?></td>
                         <?php endif; ?>
-                        <td><?= $datos["nombreClasificacion"] ?></td>
+                        <td data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?= $datos["descripcion"] ?></td>
                         <td>
                             <form action="../../../Emenet/pages/ordenesDocumentos.php" method="post">
                                 <input type="hidden" value="" name="folio">
                                 <button class="btn btn-block btn-outline-primary btn-xs" type="submit"><i class="fas fa-map-marked"></i></button>
-                            </form>
-                            <form action="../../../Emenet/pages/ordenesDocumentos.php" method="post">
-                                <input type="hidden" value="" name="folio">
-                                <button class="btn btn-block btn-outline-primary btn-xs" type="submit"><i class="fas fa-check"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -72,3 +80,36 @@ if ($clave == 1) {
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#tablaRepor').DataTable({
+            "columnDefs": [{
+                "targets": 0
+            }],
+            "order": [ 0, 'desc' ],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Resultados _START_-_END_ de  _TOTAL_",
+                "sInfoEmpty": "Mostrando resultados del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "",
+                "sSearch": "Buscar Cliente:",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+            },
+            "lengthMenu": [
+                [25, 50, 100, -1],
+                [25, 50, 100, "Todos"]
+            ],
+            scrollCollapse: true
+        });
+    });
+    document.getElementById("estadoInstalacion").innerText = "Instalaciones <?=ESTADO[$clave]?>";
+</script>
