@@ -1,5 +1,5 @@
 <?php
-require_once "../model/conexion.php";
+require_once "../controller/conexion.php";
 CONST ESTADO = array(
     "1" => "Pendientes",
     "3" => "Realizadas",
@@ -12,9 +12,9 @@ if ($clave == 1) {
     ins.telefono, catp.nombrePoblacion, ins.fechaRegistro, 
     clasin.descripcion, detins.fechaAtencion 
     FROM instalaciones AS ins 
-    INNER JOIN catalogopoblaciones AS catp ON ins.id_poblacion = catp.id 
-    INNER JOIN clasificacionesinstalacion AS clasin ON clasin.id = ins.id_clasificacion 
-    INNER JOIN detalleinstalacion AS detins ON detins.id_instalacion = ins.id 
+    INNER JOIN catalogoPoblaciones AS catp ON ins.id_poblacion = catp.id 
+    INNER JOIN clasificacionesInstalacion AS clasin ON clasin.id = ins.id_clasificacion 
+    LEFT JOIN detalleInstalacion AS detins ON detins.id_instalacion = ins.id 
     WHERE id_estado = '$clave' ORDER bY ins.id DESC";
     $result = mysqli_query($conexion, $query);
 } else {
@@ -22,10 +22,10 @@ if ($clave == 1) {
     ins.telefono, catp.nombrePoblacion, ins.fechaRegistro, 
     clasin.descripcion, detins.fechaAtencion 
     FROM instalaciones AS ins 
-    INNER JOIN catalogopoblaciones AS catp ON ins.id_poblacion = catp.id 
-    INNER JOIN clasificacionesinstalacion AS clasin ON clasin.id = ins.id_clasificacion 
-    INNER JOIN detalleinstalacion AS detins ON detins.id_instalacion = ins.id 
-    WHERE id_estado = '$clave' ORDER bY ins.id DESC LIMIT 50";
+    INNER JOIN catalogoPoblaciones AS catp ON ins.id_poblacion = catp.id 
+    INNER JOIN clasificacionesInstalacion AS clasin ON clasin.id = ins.id_clasificacion 
+    LEFT JOIN detalleInstalacion AS detins ON detins.id_instalacion = ins.id 
+    WHERE id_estado = '$clave' ORDER bY ins.id DESC LIMIT 150";
     $result = mysqli_query($conexion, $query);
 }
 ?>
@@ -58,16 +58,16 @@ if ($clave == 1) {
                     <?php else:?>
                         <tr>
                     <?php endif; ?>
-                        <th scope="row" data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["id"] ?></th>
-                        <td data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["nombreCliente"] ?></td>
-                        <td data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?=substr($datos["telefono"],0,10)?></td>
-                        <td data-toggle="modal" data-target="#modalActualizarInst"><?= $datos["nombrePoblacion"] ?></td>
+                        <th scope="row" data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["id"] ?></th>
+                        <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["nombreCliente"] ?></td>
+                        <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?=substr($datos["telefono"],0,10)?></td>
+                        <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["nombrePoblacion"] ?></td>
                         <?php if ($clave == 1) : ?>
-                            <td data-toggle="modal" data-target="#modalActualizarInst"><?= substr($datos["fechaRegistro"], 0, 10) ?></td>
+                            <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst"><?= date("d-m-Y", strtotime(substr($datos["fechaRegistro"], 0, 10))) ?></td>
                         <?php else : ?>
-                            <td data-toggle="modal" data-target="#modalActualizarInst"><?= substr($datos["fechaRegistro"], 0, 10)?><small style="font-weight: bold;color:red;font-size:18px"> | </small><?=substr($datos["fechaAtencion"], 0, 10)?></td>
+                            <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst"><?=date("d-m-Y", strtotime(substr($datos["fechaRegistro"], 0, 10)))?><small style="font-weight: bold;color:red;font-size:18px"> | </small><?=date("d-m-Y", strtotime(substr($datos["fechaAtencion"], 0, 10)))?></td>
                         <?php endif; ?>
-                        <td data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?= $datos["descripcion"] ?></td>
+                        <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?= $datos["descripcion"] ?></td>
                         <td>
                             <form action="../../../Emenet/pages/ordenesDocumentos.php" method="post">
                                 <input type="hidden" value="" name="folio">

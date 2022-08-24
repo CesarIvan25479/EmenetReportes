@@ -1,7 +1,8 @@
 <?php
+$codigo = $_POST["codigo"];
 $curl = curl_init();
 curl_setopt_array($curl, [
-	CURLOPT_URL => "https://apisgratis.com/cp/colonias/cp/?valor=52665",
+	CURLOPT_URL => "https://apisgratis.com/cp/colonias/cp/?valor=$codigo",
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_FOLLOWLOCATION => true,
 	CURLOPT_ENCODING => "",

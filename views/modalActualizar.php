@@ -1,13 +1,16 @@
 <?php
-include "../model/conexion.php";
-$query = "SELECT *FROM catalogopoblaciones";
+include "../controller/conexion.php";
+$query = "SELECT *FROM catalogoPoblaciones";
 $result = mysqli_query($conexion, $query);
+
+$query = "SELECT *FROM clasificacionesInstalacion";
+$resultClasifi = mysqli_query($conexion, $query);
 ?>
-<div class="modal fade" id="modalActualizarInst" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalActualizarInst" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">OLGA PLACIDO ARAGON</h5>
+                <h5 class="modal-title" id="tituloModalAct"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -60,7 +63,7 @@ $result = mysqli_query($conexion, $query);
                     </div>
                     <div class="col-sm-7">
                         <div class="input-group mb-1">
-                            <select class="form-control form-control-sm select2 select2-danger" 
+                            <select class="form-control form-control-sm" 
                             data-dropdown-css-class="select2-danger" style="width: 100%;" id="apoblacion" 
                             name="poblacion">
                                 <?php while ($localidad = mysqli_fetch_array($result)) : ?>
@@ -113,12 +116,13 @@ $result = mysqli_query($conexion, $query);
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="clasificacion" class="col-sm-3 col-form-label">Clasificación:</label>
+                    <label for="aclasificacion" class="col-sm-3 col-form-label">Clasificación:</label>
                     <div class="col-sm-9">
                         <div class="input-group mb-1">
-                            <select name="clasificacion" id="clasificacion" class="form-control form-control-sm">
-                                <option>INA</option>
-                                <option>IFO</option>
+                            <select name="clasificacion" id="aclasificacion" class="form-control form-control-sm">
+                                <?php while($clasificacion = mysqli_fetch_array($resultClasifi)):?>
+                                    <option value="<?=$clasificacion['descripcion']?>"><?=$clasificacion["nombreClasificacion"]?></option>
+                                <?php endwhile;?>
                             </select>
                         </div>
                     </div>
@@ -133,19 +137,19 @@ $result = mysqli_query($conexion, $query);
                     </div>
                 </div>
                 <div class="container div-cont mb-2">
-                    <b class="titulo-aviso">Registrado por <small class="usario-registro">Cesar Ivan Rivera</small></b>
-                    <b class="info-Fecha">Fecha: <small class="usario-registro">29-07-2022</small></b>
-                    <b class="info-Fecha">Hora: <small class="usario-registro">11:56 AM</small></b>
+                    <b class="titulo-aviso">Registrado por <small class="usario-registro" id="recibioNom"></small></b>
+                    <b class="info-Fecha">Fecha: <small class="usario-registro" id="recibioFecha"></small></b>
+                    <b class="info-Fecha">Hora: <small class="usario-registro" id="recibioHora"></small></b>
                 </div>
-                <div class="container div-cont mb-2">
-                    <b class="titulo-aviso">Actualizado por <small class="usario-registro">Isaac Fuentes</small></b>
-                    <b class="info-Fecha">Fecha: <small class="usario-registro">29-07-2022</small></b>
-                    <b class="info-Fecha">Hora: <small class="usario-registro">11:56 AM</small></b>
+                <div class="container div-cont mb-2" id="infoActualizo">
+                    <b class="titulo-aviso">Actualizado por <small class="usario-registro" id="actualizoNom"></small></b>
+                    <b class="info-Fecha">Fecha: <small class="usario-registro" id="actualizoFecha"></small></b>
+                    <b class="info-Fecha">Hora: <small class="usario-registro" id="actualizoHora"></small></b>
                 </div>
-                <div class="container div-cont mb-2">
-                    <b class="titulo-aviso">Atendido por <small class="usario-registro">Sherlyn Beltran</small></b>
-                    <b class="info-Fecha">Fecha: <small class="usario-registro">29-07-2022</small></b>
-                    <b class="info-Fecha">Hora: <small class="usario-registro">11:56 AM</small></b>
+                <div class="container div-cont mb-2" id="infoAtendio">
+                    <b class="titulo-aviso">Atendido por <small class="usario-registro" id="atendioNom"></small></b>
+                    <b class="info-Fecha">Fecha: <small class="usario-registro" id="atendioFecha"></small></b>
+                    <b class="info-Fecha">Hora: <small class="usario-registro" id="atendioHora"></small></b>
                 </div>
 
             </div>

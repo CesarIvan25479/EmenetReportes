@@ -20,6 +20,9 @@
     font-weight: bold;
     font-size: 14px;
 }
+#infoActualizo{
+    display: none;
+}
 .div-cont{
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 10px;

@@ -2,7 +2,7 @@ let iniciar = document.getElementById("iniciarSesion");
 iniciar.addEventListener("submit", (e) =>{
     e.preventDefault();
     var formInicia = new FormData(iniciar);
-    fetch("./model/login.php",{
+    fetch("./controller/login.php",{
         method: "POST",
         body: formInicia
     })
@@ -17,7 +17,7 @@ iniciar.addEventListener("submit", (e) =>{
 })
 $.ajax({
     type: "POST",
-    url: "./model/recordarSesion.php",
+    url: "./controller/recordarSesion.php",
     dataType: "json",
     success: (data) => {
         if(data.estado == "guardado"){
