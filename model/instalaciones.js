@@ -39,22 +39,22 @@ const buscarDatosIns = (cliente) => {
                 console.log(data);
             } else {
                 console.log(data);
-                $("#acliente").val(data.info.nombreCliente.toUpperCase());
+                $("#acliente").val(data.info.nombre.toUpperCase());
                 if (data.info.telefono.length == 20) {
                     $('#ainputTelf2').css('display', 'flex');
                     $("#AcambiarIcono").html(`<i class="fas fa-minus"></i>`);
                     $("#atelefono2").val(data.info.telefono.substr(10,20));
                 }
                 $("#atelefono").val(data.info.telefono.substr(0, 10));
-                $("#apoblacion").val(data.info.idPob);
-                $("#acoordenadas").val(data.info.coordenadas);
-                $("#adireccion").val(data.info.direccion.toUpperCase());
-                $("#acaracteristicas").val(data.info.caracteristicasDomicilio.toUpperCase());
-                $("#areferencias").val(data.info.referencias.toUpperCase());
-                $("#aclasificacion").val(data.info.descripcion);
-                $("#adisponibilidad").val(data.info.disponibilidad.toUpperCase());
+                $("#apoblacion").val(data.info.poblacion);
+                $("#acoordenadas").val(data.info.ubicacion);
+                $("#adireccion").val(data.info.nomCalle.toUpperCase());
+                $("#acaracteristicas").val(data.info.detalleCasa.toUpperCase());
+                $("#areferencias").val(data.info.refDomicilio.toUpperCase());
+                $("#adisponibilidad").val(data.info.horarioDis.toUpperCase());
+                $("#aclasificacion").val(data.info.tipoServicio);
                 $("#aobservaciones").val(data.info.observaciones.toUpperCase());
-                $("#tituloModalAct").text(data.info.nombreCliente.toUpperCase());
+                $("#tituloModalAct").text(data.info.nombre.toUpperCase());
                 $("#recibioNom").text(data.recibio.nombre);
                 $("#recibioFecha").text(data.recibio.fecha);
                 $("#recibioHora").text(data.recibio.hora);
@@ -72,43 +72,18 @@ const buscarDatosIns = (cliente) => {
                 $("#atendioNom").text(data.atendio.nombre);
                 $("#atendioFecha").text(data.atendio.fecha);
                 $("#atendioHora").text(data.atendio.hora);
+
+                if(data.instalando.nombre == " "){
+                    $("#estadoAtendiendo").css("background-color", "");
+                    $("#datosAtendiendo").css('display', 'none')
+                }else{
+                    $("#estadoAtendiendo").css("background-color", "#ffe3d3");
+                    $("#datosAtendiendo").css('display', 'block');
+                    $("#atenNombre").text(data.instalando.nombre);
+                    $("#atenFecha").text(data.instalando.fecha);
+                }
+                
             }
         }
     })
 }
-$(document).ready(() => {
-    let estadoTel = false;
-    $("#agregaTel").on("click", () => {
-        if (estadoTel) {
-            $('#inputTelf2').css('display', 'none');
-            $("#cambiarIcono").html(`<i class="fas fa-plus"></i>`);
-            $('#telefono2').val("");
-            estadoTel = false;
-        } else {
-            $('#inputTelf2').css('display', 'flex');
-            $("#cambiarIcono").html(`<i class="fas fa-minus"></i>`);
-            estadoTel = true;
-        }
-    })
-    $("#AagregaTel").on("click", () => {
-        if (estadoTel) {
-            $('#ainputTelf2').css('display', 'none');
-            $("#AcambiarIcono").html(`<i class="fas fa-plus"></i>`);
-            $('#Atelefono2').val("");
-            estadoTel = false;
-        } else {
-            $('#ainputTelf2').css('display', 'flex');
-            $("#AcambiarIcono").html(`<i class="fas fa-minus"></i>`);
-            estadoTel = true;
-        }
-    })
-    $('#telefono').on('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
-    $('#telefono2').on('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    });
-    $("#cPostal").on('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, '');
-    })
-})

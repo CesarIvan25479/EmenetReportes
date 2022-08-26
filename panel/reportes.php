@@ -1,15 +1,9 @@
 <?php
 session_start();
 $usuario = $_SESSION["nombreUser"];
-
-
 date_default_timezone_set('America/Mexico_City');
 $fechaActualFormato = date('d-m-Y');
 $FechaActual = date('Ymd');
-
-
-
-
 ?>
 <!DOCTYPE html>
 <!--

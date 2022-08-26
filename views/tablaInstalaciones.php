@@ -1,6 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION["nombreUser"])) {
+    header("location: ../index.html");
+    die();
+} 
 require_once "../controller/conexion.php";
-CONST ESTADO = array(
+const ESTADO = array(
     "1" => "Pendientes",
     "3" => "Realizadas",
     "4" => "No exitosas"
@@ -10,7 +15,7 @@ $clave = $_GET["clave"];
 if ($clave == 1) {
     $query = "SELECT ins.id, detins.id_instalacion, ins.nombreCliente, 
     ins.telefono, catp.nombrePoblacion, ins.fechaRegistro, 
-    clasin.descripcion, detins.fechaAtencion 
+    clasin.descripcion, detins.fechaAtencion, detins.id_instalando
     FROM instalaciones AS ins 
     INNER JOIN catalogoPoblaciones AS catp ON ins.id_poblacion = catp.id 
     INNER JOIN clasificacionesInstalacion AS clasin ON clasin.id = ins.id_clasificacion 
@@ -51,21 +56,23 @@ if ($clave == 1) {
                 <?php while ($datos = mysqli_fetch_array($result)) :
                 ?>
 
-                    <?php if ($clave == 3):?>
+                    <?php if ($clave == 3) : ?>
                         <tr class="table-success">
-                    <?php elseif($clave == 4):?>
+                        <?php elseif ($clave == 4) : ?>
                         <tr class="table-danger">
-                    <?php else:?>
+                        <?php elseif ($datos["id_instalando"] != null) : ?>
+                        <tr class="table-row" style="background-color: #ffe3d3;">
+                        <?php else : ?>
                         <tr>
-                    <?php endif; ?>
+                        <?php endif; ?>
                         <th scope="row" data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["id"] ?></th>
                         <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["nombreCliente"] ?></td>
-                        <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?=substr($datos["telefono"],0,10)?></td>
+                        <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?= substr($datos["telefono"], 0, 10) ?></td>
                         <td data-toggle="modal" onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-target="#modalActualizarInst"><?= $datos["nombrePoblacion"] ?></td>
                         <?php if ($clave == 1) : ?>
                             <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst"><?= date("d-m-Y", strtotime(substr($datos["fechaRegistro"], 0, 10))) ?></td>
                         <?php else : ?>
-                            <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst"><?=date("d-m-Y", strtotime(substr($datos["fechaRegistro"], 0, 10)))?><small style="font-weight: bold;color:red;font-size:18px"> | </small><?=date("d-m-Y", strtotime(substr($datos["fechaAtencion"], 0, 10)))?></td>
+                            <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst"><?= date("d-m-Y", strtotime(substr($datos["fechaRegistro"], 0, 10))) ?><small style="font-weight: bold;color:red;font-size:18px"> | </small><?= date("d-m-Y", strtotime(substr($datos["fechaAtencion"], 0, 10))) ?></td>
                         <?php endif; ?>
                         <td onclick="buscarDatosIns('<?= $datos['id'] ?>')" data-toggle="modal" data-target="#modalActualizarInst" style="color: #00809C;font-weight: bold;"><?= $datos["descripcion"] ?></td>
                         <td>
@@ -74,8 +81,8 @@ if ($clave == 1) {
                                 <button class="btn btn-block btn-outline-primary btn-xs" type="submit"><i class="fas fa-map-marked"></i></button>
                             </form>
                         </td>
-                    </tr>
-                <?php endwhile; ?>
+                        </tr>
+                    <?php endwhile; ?>
             </table>
         </div>
     </div>
@@ -86,7 +93,7 @@ if ($clave == 1) {
             "columnDefs": [{
                 "targets": 0
             }],
-            "order": [ 0, 'desc' ],
+            "order": [0, 'desc'],
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_",
@@ -111,5 +118,5 @@ if ($clave == 1) {
             scrollCollapse: true
         });
     });
-    document.getElementById("estadoInstalacion").innerText = "Instalaciones <?=ESTADO[$clave]?>";
+    document.getElementById("estadoInstalacion").innerText = "Instalaciones <?= ESTADO[$clave] ?>";
 </script>
