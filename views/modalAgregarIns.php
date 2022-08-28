@@ -9,7 +9,7 @@ $resultClasifi = mysqli_query($conexion, $query);
 <div class="modal fade" id="modalRegistroInst" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="agregarOrden" enctype="multipart/form-data">
+            <form id="formAgregarIns" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h4 class="modal-title" id="staticBackdropLabel">Registrar Instalación</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -21,9 +21,11 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="cliente" class="col-sm-3 col-form-label">Nombre:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <input type="text" class="form-control form-control-sm" placeholder="Nombre del titular" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" 
-                                id="Acliente" name="cliente">
+                                <input autocomplete="off"
+                                type="text" class="form-control form-control-sm" 
+                                placeholder="Nombre del titular" 
+                                onkeyup="javascript:this.value=this.value.toUpperCase();"
+                                 id="Acliente" name="cliente" required>
                             </div>
                         </div>
                     </div>
@@ -35,8 +37,9 @@ $resultClasifi = mysqli_query($conexion, $query);
                                 <div class="input-group-prepend" id="agregaTel">
                                     <span class="input-group-text" id="cambiarIcono"><i class="fas fa-plus"></i></span>
                                 </div>
-                                <input type="text" class="form-control form-control-sm"
-                                placeholder="Número Teléfonico" maxlength="10" name="telefono" id="telefono">
+                                <input type="text" class="form-control form-control-sm" 
+                                placeholder="Número Teléfonico" maxlength="10" 
+                                name="telefono" id="telefono" required>
                             </div>
                         </div>
                     </div>
@@ -45,8 +48,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="telefono2" class="col-sm-3 col-form-label">Teléfono 2:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <input type="text" class="form-control form-control-sm" 
-                                placeholder="Número Teléfonico" maxlength="10" name="telefono2" id="telefono2">
+                                <input type="text" class="form-control form-control-sm" placeholder="Número Teléfonico" maxlength="10" name="telefono2" id="telefono2">
                             </div>
                         </div>
                     </div>
@@ -56,7 +58,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
                                 <select class="form-control form-control-sm select2" style="width: 100%;" id="poblacion" name="poblacion">
-                                    <option value="ADS">ASDSA</option>
+                                    <option value="" style="visibility: hidden; display: none;">Seleccione una población</option>
                                     <?php while ($localidad = mysqli_fetch_array($resultPobla)) : ?>
                                         <option value="<?= $localidad['id'] ?>"><?= $localidad['nombrePoblacion'] ?></option>
                                     <?php endwhile; ?>
@@ -69,8 +71,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="coordenadas" class="col-sm-3 col-form-label">Coordenadas:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <input type="text" class="form-control form-control-sm" 
-                                placeholder="Coordenadas de Maps" name="coordenadas" id="coordenadas">
+                                <input type="text" class="form-control form-control-sm" placeholder="Coordenadas de Maps" name="coordenadas" id="coordenadas">
                             </div>
                         </div>
                     </div>
@@ -79,9 +80,11 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="direccion" class="col-sm-3 col-form-label">Dirección:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <input type="text" class="form-control form-control-sm" 
+                                <input type="text" class="form-control form-control-sm"
+                                required 
                                 placeholder="Nombre de la calle y número" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" name="direccion" id="direccion">
+                                onkeyup="javascript:this.value=this.value.toUpperCase();" 
+                                name="direccion" id="direccion">
                             </div>
                         </div>
                     </div>
@@ -89,9 +92,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="caracteristicas" class="col-sm-3 col-form-label">Características del domicilio:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <textarea class="form-control form-control-sm" rows="2" 
-                                placeholder="Descripción de la casa" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" name="caracteristicas" id="caracteristicas"></textarea>
+                                <textarea class="form-control form-control-sm" rows="2" placeholder="Descripción de la casa" onkeyup="javascript:this.value=this.value.toUpperCase();" name="caracteristicas" id="caracteristicas"></textarea>
                             </div>
                         </div>
                     </div>
@@ -99,10 +100,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="referencias" class="col-sm-3 col-form-label">Referencias:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <textarea class="form-control form-control-sm" rows="2" 
-                                placeholder="Puntos de referencia para encontrar el domicilio" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" 
-                                name="referencias" id="referencias"></textarea>
+                                <textarea class="form-control form-control-sm" rows="2" placeholder="Puntos de referencia para encontrar el domicilio" onkeyup="javascript:this.value=this.value.toUpperCase();" name="referencias" id="referencias"></textarea>
                             </div>
                         </div>
                     </div>
@@ -110,10 +108,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="disponibilidad" class="col-sm-3 col-form-label">Disponibilidad:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <textarea class="form-control form-control-sm" rows="1" 
-                                placeholder="Días y horario en el que se encuentren en el domicilio" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" 
-                                name="disponibilidad" id="disponibilidad"></textarea>
+                                <textarea class="form-control form-control-sm" rows="1" placeholder="Días y horario en el que se encuentren en el domicilio" onkeyup="javascript:this.value=this.value.toUpperCase();" name="disponibilidad" id="disponibilidad"></textarea>
                             </div>
                         </div>
                     </div>
@@ -122,8 +117,10 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
                                 <select name="clasificacion" id="clasificacion" class="form-control form-control-sm">
-                                    <option>INA</option>
-                                    <option>IFO</option>
+                                    <option value="" style="visibility: hidden; display: none;">Seleccione una clasificación</option>
+                                    <?php while ($clasificacion = mysqli_fetch_array($resultClasifi)) : ?>
+                                        <option value="<?= $clasificacion['id'] ?>"><?= $clasificacion['nombreClasificacion'] ?></option>
+                                    <?php endwhile; ?>
                                 </select>
                             </div>
                         </div>
@@ -133,16 +130,14 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="observaciones" class="col-sm-3 col-form-label">Observaciones:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <textarea class="form-control form-control-sm" rows="2" 
-                                onkeyup="javascript:this.value=this.value.toUpperCase();" 
-                                name="observaciones" id="observaciones"></textarea>
+                                <textarea class="form-control form-control-sm" rows="2" onkeyup="javascript:this.value=this.value.toUpperCase();" name="observaciones" id="observaciones"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-between">
                     <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-outline-success btn-sm">Registrar Instalación</button>
+                    <button type="button" onclick="agregarInstalacion()" class="btn btn-outline-success btn-sm">Registrar Instalación</button>
                 </div>
             </form>
         </div>

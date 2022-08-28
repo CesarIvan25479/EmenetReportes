@@ -1,3 +1,10 @@
+let Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 20000
+});
+
 const mostrarPendientes = (clave) => {
     $("#tablaInstalaciones").load("../views/tablaInstalaciones.php?clave=" + clave);
 }
@@ -84,6 +91,31 @@ const buscarDatosIns = (cliente) => {
                 }
                 
             }
+        }
+    })
+}
+
+const agregarInstalacion = () => {
+    const formulario = document.getElementById("formAgregarIns");
+    const datos = new FormData(formulario);
+    fetch('../controller/instalaciones/agregarInstalacion.php',{
+        method: "POST",
+        body: datos
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.estado == "error"){
+            console.log(data)
+        }else{
+            console.log(data);
+            Toast.fire({
+                icon: 'success',
+                title: `Instalacion Guardada correctamente 
+                ${data.nombreRegistro}`
+            });
+            document.getElementById('formAgregarIns').reset();
+            $('#modalRegistroInst').modal('hide');
+            $("#tablaInstalaciones").load("../views/tablaInstalaciones.php?clave=1");
         }
     })
 }

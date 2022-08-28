@@ -1,9 +1,4 @@
 <?php
-session_start();
-if (!isset($_SESSION["nombreUser"])) {
-    header("location: ../index.html");
-    die();
-} 
 require_once "../controller/conexion.php";
 const ESTADO = array(
     "1" => "Pendientes",

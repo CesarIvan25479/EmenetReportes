@@ -1,46 +1,56 @@
-.telefono2{
-    display: none;
+.telefono2 {
+  display: none;
 }
-#agregaTel{
-    cursor: pointer;
+#agregaTel {
+  cursor: pointer;
 }
-.titulo-aviso{
-    font-weight: bold;
-    font-size: 14px;
-    padding: 0;
-    margin: 2px;
+.titulo-aviso {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0;
+  margin: 2px;
 }
-.info-Fecha{
-    font-weight: bold;
-    font-size: 14px;
-    padding: 0;
+.info-Fecha {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0;
 }
-.usario-registro{
-    color: #00809C;
-    font-weight: bold;
-    font-size: 14px;
+.usario-registro {
+  color: #00809c;
+  font-weight: bold;
+  font-size: 14px;
 }
-#infoActualizo{
-    display: none;
+#infoActualizo {
+  display: none;
 }
-.div-cont{
-    border-bottom: 2px solid #e9ecef;
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
+.div-cont {
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
-.formatAtendiendo{
-    margin-bottom: 0;
-    color: #DC5700;
-    display: none;
+.formatAtendiendo {
+  margin-bottom: 0;
+  color: #dc5700;
+  display: none;
+}
+.modal-body input:required {
+  -webkit-box-shadow: 0px 0px 3px 2px rgba(255, 3, 3, 1);
+  -moz-box-shadow: 0px 0px 3px 2px rgba(255, 3, 3, 1);
+  box-shadow: 0px 0px 3px 2px rgba(255, 3, 3, 1);
+  border: none;
+}
+
+.modal-body textarea:required {
+  border: 1px solid red;
 }
 @media (max-width: 435px) {
-    .tablaInstalaciones{
-        zoom:60%;
-      }
-      .form-group{
-        margin-bottom:0rem
-    }
+  .tablaInstalaciones {
+    zoom: 60%;
   }
+  .form-group {
+    margin-bottom: 0rem;
+  }
+}

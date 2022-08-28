@@ -4,7 +4,7 @@ $cliente = $_POST["cliente"];
 $query = "SELECT 
 ins.id, ins.nombreCliente, ins.telefono, catp.id as idPob,
 ins.coordenadas, ins.direccion, ins.caracteristicasDomicilio,
-ins.referencias, clasin.descripcion, ins.disponibilidad, ins.observaciones, detins.id_instalando,
+ins.referencias, clasin.id AS idClasi, ins.disponibilidad, ins.observaciones, detins.id_instalando,
 uRec.nombre AS recNombre, uRec.aPaterno AS recPaterno, ins.fechaRegistro, 
 uAct.nombre AS actNombre, uAct.aPaterno AS actPaterno, detins.fechaActualizacion,
 uAten.nombre AS atenNombre, uAten.aPaterno AS atenPaterno, detins.fechaAtencion,
@@ -49,7 +49,7 @@ if($result){
         "nomCalle" => $datos["direccion"], 
         "detalleCasa" => $datos["caracteristicasDomicilio"],
         "refDomicilio" => $datos["referencias"],
-        "tipoServicio" => $datos["descripcion"],
+        "tipoServicio" => $datos["idClasi"],
         "horarioDis" => $datos["disponibilidad"],
         "observaciones" => $datos["observaciones"],
         "instalando" => $datos["id_instalando"],
