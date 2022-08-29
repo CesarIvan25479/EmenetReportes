@@ -13,16 +13,11 @@ $disponibilidad = strip_tags(trim($_POST["disponibilidad"]));
 $clasificacion = strip_tags(trim($_POST["clasificacion"]));
 $observaciones = strip_tags(trim($_POST["observaciones"]));
 
-if(empty($nombreCliente) || empty($telefono) || empty($poblacion) || empty($direccion) || empty($clasificacion)){
-    $data["estado"] = "error";
+if (empty($nombreCliente) || empty($telefono) || empty($poblacion) || empty($direccion) || empty($clasificacion)) {
+    $data["estado"] = "llenar";
     echo json_encode($data);
-}else{
-    echo json_encode($_POST);
-}
-
-
-
-/*$query = "INSERT INTO instalaciones
+} else {
+    $query = "INSERT INTO instalaciones
     (id_clasificacion, nombreCliente, telefono, id_poblacion, coordenadas,
     direccion, caracteristicasDomicilio, referencias, disponibilidad, 
     observaciones, id_recibio, fechaRegistro, id_estado) 
@@ -41,6 +36,11 @@ if(empty($nombreCliente) || empty($telefono) || empty($poblacion) || empty($dire
     NOW(),
     '1'
 )";
-$resul = mysqli_query($conexion, $query);
-$data["nombreRegistro"] = $nombreCliente;]*/
 
+    if ($result = mysqli_query($conexion, $query)) {
+        $data["nombreRegistro"] = $nombreCliente;
+        echo json_encode($data);
+    }else{
+        $data["estado"] = "conexion";
+    }
+}

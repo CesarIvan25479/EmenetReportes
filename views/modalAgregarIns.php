@@ -25,7 +25,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                                 type="text" class="form-control form-control-sm" 
                                 placeholder="Nombre del titular" 
                                 onkeyup="javascript:this.value=this.value.toUpperCase();"
-                                 id="Acliente" name="cliente" required>
+                                 id="cliente" name="cliente">
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                                 </div>
                                 <input type="text" class="form-control form-control-sm" 
                                 placeholder="Número Teléfonico" maxlength="10" 
-                                name="telefono" id="telefono" required>
+                                name="telefono" id="telefono">
                             </div>
                         </div>
                     </div>
@@ -80,8 +80,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="direccion" class="col-sm-3 col-form-label">Dirección:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <input type="text" class="form-control form-control-sm"
-                                required 
+                                <input type="text" class="form-control form-control-sm" 
                                 placeholder="Nombre de la calle y número" 
                                 onkeyup="javascript:this.value=this.value.toUpperCase();" 
                                 name="direccion" id="direccion">
@@ -116,7 +115,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <label for="clasificacion" class="col-sm-3 col-form-label">Clasificación:</label>
                         <div class="col-sm-9">
                             <div class="input-group mb-1">
-                                <select name="clasificacion" id="clasificacion" class="form-control form-control-sm">
+                                <select name="clasificacion" id="clasificacion" class="form-control form-control-sm selectClas">
                                     <option value="" style="visibility: hidden; display: none;">Seleccione una clasificación</option>
                                     <?php while ($clasificacion = mysqli_fetch_array($resultClasifi)) : ?>
                                         <option value="<?= $clasificacion['id'] ?>"><?= $clasificacion['nombreClasificacion'] ?></option>
