@@ -64,6 +64,7 @@ if (empty($nombreCliente) || empty($telefono) || empty($poblacion) || empty($dir
             $data["estado"] = actualizarDatos($nombreCliente, $telefono, $telefono2,
             $poblacion, $coordenadas, $direccion, $caracteristicas, $referencias, $disponibilidad,
             $clasificacion, $observaciones, $folio, $conexion);
+            $data["estadoReg"] = $_POST["estado"];
             echo json_encode($data);
         }else{
             $data["estado"] == "error";
@@ -76,6 +77,7 @@ if (empty($nombreCliente) || empty($telefono) || empty($poblacion) || empty($dir
             $data["estado"] = actualizarDatos($nombreCliente, $telefono, $telefono2,
             $poblacion, $coordenadas, $direccion, $caracteristicas, $referencias, $disponibilidad,
             $clasificacion, $observaciones, $folio, $conexion);
+            $data["estadoReg"] = $_POST["estado"];
             echo json_encode($data);
         }else{
             $data["estado"] == "error";

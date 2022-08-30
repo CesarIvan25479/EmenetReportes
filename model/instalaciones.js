@@ -2,7 +2,7 @@ let Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 20000
+    timer: 7000
 });
 
 const mostrarPendientes = (clave) => {
@@ -66,6 +66,7 @@ const buscarDatosIns = (cliente) => {
                 $("#recibioNom").text(data.recibio.nombre);
                 $("#recibioFecha").text(data.recibio.fecha);
                 $("#recibioHora").text(data.recibio.hora);
+                $("#estado").val(data.info.estado);
 
                 data.actualizo.nombre == " " ? 
                 $("#infoActualizo").css('display','none'): 
@@ -159,6 +160,15 @@ const actualizarInstalacion = () =>{
             });
         }else{
             console.log(data)
+            validarCamposAct();
+            Toast.fire({
+                icon: 'success',
+                title: `Información actualizada correctamente 
+                ${data.estado}`
+            });
+            document.getElementById('formActulizarIns').reset();
+            $('#modalActualizarInst').modal('hide');
+            $("#tablaInstalaciones").load("../views/tablaInstalaciones.php?clave="+data.estadoReg);
         }
     })
 }

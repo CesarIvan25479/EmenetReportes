@@ -3,7 +3,7 @@ include "../conexion.php";
 $cliente = $_POST["cliente"];
 $query = "SELECT 
 ins.id, ins.nombreCliente, ins.telefono, catp.id as idPob,
-ins.coordenadas, ins.direccion, ins.caracteristicasDomicilio,
+ins.coordenadas, ins.direccion, ins.caracteristicasDomicilio, id_estado,
 ins.referencias, clasin.id AS idClasi, ins.disponibilidad, ins.observaciones, detins.id_instalando,
 uRec.nombre AS recNombre, uRec.aPaterno AS recPaterno, ins.fechaRegistro, 
 uAct.nombre AS actNombre, uAct.aPaterno AS actPaterno, detins.fechaActualizacion,
@@ -53,6 +53,7 @@ if($result){
         "horarioDis" => $datos["disponibilidad"],
         "observaciones" => $datos["observaciones"],
         "instalando" => $datos["id_instalando"],
+        "estado" => $datos["id_estado"]
     ];
 }else{
     $data["estado"] = "error";

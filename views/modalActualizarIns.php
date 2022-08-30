@@ -29,6 +29,9 @@ $resultClasifi = mysqli_query($conexion, $query);
                                 <input 
                                 type="hidden" class="form-control form-control-sm"  
                                  id="folio" name="folio">
+                                 <input 
+                                type="hidden" class="form-control form-control-sm"  
+                                 id="estado" name="estado">
                             </div>
                         </div>
                     </div>
