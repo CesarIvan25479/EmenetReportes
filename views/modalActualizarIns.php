@@ -159,7 +159,7 @@ $resultClasifi = mysqli_query($conexion, $query);
                         <button type="button" class="btn btn-outline-secondary btn-sm" data-dismiss="modal">Cerrar</button>
                         <button type="button" class="btn btn-outline-danger btn-sm">No exitosa <i class="fab fa-mixer"></i></button>
                         <button type="button" class="btn btn-outline-warning btn-sm" onclick="actualizarInstalacion()">Actualizar <i class="fas fa-edit"></i></button>
-                        <button type="button" class="btn btn-outline-success btn-sm">Completar <i class="fas fa-check"></i></button>
+                        <button type="button" class="btn btn-outline-success btn-sm" onclick="completarInstalacion()">Completar <i class="fas fa-check"></i></button>
                     </div>
 
                 </div>

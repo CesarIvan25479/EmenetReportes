@@ -172,3 +172,16 @@ const actualizarInstalacion = () =>{
         }
     })
 }
+
+const completarInstalacion = () =>{
+    const formulario = document.getElementById("formActulizarIns");
+    const datos = new FormData(formulario);
+    fetch("../controller/instalaciones/completarIns.php",{
+        method: "POST",
+        body: datos
+    })
+    .then(res => res.json())
+    .then(data =>{
+        console.log(data)
+    })
+}
